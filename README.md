@@ -10,7 +10,8 @@ course. Additionally, `get_crn` makes it easier to search for a specific course
 and `get_subjects` makes it easy to get a list of all the course subjects in
 the timetable.
 
-[Documentation can be found here.](https://leodiperna.com/projects/vt-timetable/documentation)
+Documentation can be found
+[here](https://leodiperna.com/projects/vt-timetable/documentation).
 
 ## Getting started
 
@@ -26,14 +27,7 @@ After installing the module, it can be imported with:
 import vtt
 ```
 
-## Usage
-
-This module comes with several `Enum` classes that are used as search
-parameters for `search_timetable` and/or are returned by the getter functions
-in `Course`. More information about the getter functions can be found in the
-[documentation](https://leodiperna.com/projects/vt-timetable/documentation).
-
-### Examples
+## Examples
 
 Getting a set of all the subjects in the timetable:
 
