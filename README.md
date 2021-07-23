@@ -29,12 +29,6 @@ import vtt
 
 ## Examples
 
-Getting a set of all the subjects in the timetable:
-
-```python
-get_subjects()
-```
-
 Getting data about CRN 83075 for Fall 2021, and checking if there are any open
 spots:
 

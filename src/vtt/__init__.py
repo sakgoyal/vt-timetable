@@ -286,6 +286,22 @@ def get_crn(year: str, semester: Semester, crn: str) -> Course:
     return crn_search[0] if crn_search else None
 
 
+def get_semesters() -> set[tuple[str, str]]:
+    """Fetches the semesters listed in the timetable.
+
+    Returns:
+        A set of length-2 tuples representing the semesters listed in the
+        timetable. The first element of each tuple is the semester, and the
+        second element of each tuple is the year.
+    """
+
+    semester_dct = {'Spring': Semester.SPRING, 'Summer': Semester.SUMMER,
+                    'Fall': Semester.FALL}
+    return set((semester_dct[m.group(1)], m.group(2)) for m in re.finditer(
+        r'<OPTION VALUE="\d{6}">([A-Z][a-z]+) (\d+)<\/OPTION>',
+        _make_request('GET')))
+
+
 def get_subjects() -> set[tuple[str, str]]:
     """Fetches the course subjects listed in the timetable.
 
