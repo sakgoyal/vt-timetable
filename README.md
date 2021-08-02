@@ -34,7 +34,7 @@ spots:
 
 ```python
 course = get_crn('2021', Semester.FALL, '83075')
-course.get_open_spots()
+course.has_open_spots()
 ```
 
 Getting a list of all MATH 2114 sections for Fall 2021 that are taking place in
