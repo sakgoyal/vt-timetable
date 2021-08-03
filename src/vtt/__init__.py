@@ -114,6 +114,7 @@ class Semester(Enum):
     SPRING = '01'
     SUMMER = '06'
     FALL = '09'
+    WINTER = '12'
 
 
 class Status(Enum):
@@ -296,7 +297,7 @@ def get_semesters() -> set[tuple[str, str]]:
     """
 
     semester_dct = {'Spring': Semester.SPRING, 'Summer': Semester.SUMMER,
-                    'Fall': Semester.FALL}
+                    'Fall': Semester.FALL, 'Winter': Semester.WINTER}
     return set((semester_dct[m.group(1)], m.group(2)) for m in re.finditer(
         r'<OPTION VALUE="\d{6}">([A-Z][a-z]+) (\d+)<\/OPTION>',
         _make_request('GET')))

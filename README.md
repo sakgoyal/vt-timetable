@@ -6,9 +6,9 @@ This module makes it easy to get data from the Virginia Tech Timetable of
 Classes using python. The most important components of the module are the
 `search_timetable` function, which directly searches the timetable with the
 provided parameters, and the `Course` class, which contains data about a
-course. Additionally, `get_crn` makes it easier to search for a specific course
-and `get_subjects` makes it easy to get a list of all the course subjects in
-the timetable.
+course. Additionally, `get_crn` makes it easier to search for a specific
+course. The two other functions, `get_semesters` and `get_subjects`, make it
+possible to check which search parameters are valid.
 
 Documentation can be found
 [here](https://leodiperna.com/projects/vt-timetable/documentation).
