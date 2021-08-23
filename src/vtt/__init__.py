@@ -4,15 +4,15 @@ This module makes it easy to get data from the Virginia Tech Timetable of
 Classes using python. The most important components of the module are the
 `search_timetable` function, which directly searches the timetable with the
 provided parameters, and the `Course` class, which contains data about a
-course. Additionally, `get_crn` makes it easier to search for a specific course
-and `get_subjects` makes it easy to get a list of all the course subjects in
-the timetable.
+course. Additionally, `get_crn` makes it easier to search for a specific
+course. The two other functions, `get_semesters` and `get_subjects`, make it
+possible to check which search parameters are valid.
 """
 
 from enum import Enum
 import re
 
-import pandas
+from pandas import read_html
 import pandas.core.series
 import requests
 
@@ -300,7 +300,7 @@ def get_semesters() -> set[tuple[str, str]]:
                     'Fall': Semester.FALL, 'Winter': Semester.WINTER}
     return set((semester_dct[m.group(1)], m.group(2)) for m in re.finditer(
         r'<OPTION VALUE="\d{6}">([A-Z][a-z]+) (\d+)<\/OPTION>',
-        _make_request('GET')))
+        _make_request(request_type='GET')))
 
 
 def get_subjects() -> set[tuple[str, str]]:
@@ -314,7 +314,8 @@ def get_subjects() -> set[tuple[str, str]]:
     """
 
     return set((m.group(1), m.group(2)) for m in
-               re.finditer(r'\("([A-Z]+) - (.+?)"', _make_request('GET')))
+               re.finditer(r'\("([A-Z]+) - (.+?)"',
+                           _make_request(request_type='GET')))
 
 
 def search_timetable(year: str, semester: Semester,
@@ -355,10 +356,12 @@ def search_timetable(year: str, semester: Semester,
         List of courses returned by the search.
     """
 
+    term_year = ((str(int(year) - 1) if semester == Semester.WINTER else year)
+                 + semester.value)
     subject = '%' if subject == '' else subject
-    request = _make_request('POST',
+    request = _make_request(request_type='POST',
                             request_data={'CAMPUS': campus,
-                                          'TERMYEAR': year + semester.value,
+                                          'TERMYEAR': term_year,
                                           'CORE_CODE': pathway,
                                           'subj_code': subject,
                                           'SCHDTYPE': section_type,
@@ -370,7 +373,7 @@ def search_timetable(year: str, semester: Semester,
     if request == '':
         return []
 
-    request_data = pandas.read_html(request)[4]
+    request_data = read_html(request)[4]
     course_list = []
     for i in range(1, request_data.shape[0]):
         if isinstance(request_data.iloc[i][0], str):
