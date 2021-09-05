@@ -11,6 +11,7 @@ possible to check which search parameters are valid.
 
 from enum import Enum
 import re
+from typing import Dict, List, Set, Tuple
 
 from pandas import read_html
 import pandas.core.series
@@ -245,7 +246,7 @@ class Course:
     def get_professor(self) -> str:
         return self._course_data['professor']
 
-    def get_schedule(self) -> dict:
+    def get_schedule(self) -> Dict:
         return self._course_data['schedule']
 
     def has_open_spots(self) -> bool:
@@ -287,7 +288,7 @@ def get_crn(year: str, semester: Semester, crn: str) -> Course:
     return crn_search[0] if crn_search else None
 
 
-def get_semesters() -> set[tuple[str, str]]:
+def get_semesters() -> Set[Tuple[str, str]]:
     """Fetches the semesters listed in the timetable.
 
     Returns:
@@ -303,7 +304,7 @@ def get_semesters() -> set[tuple[str, str]]:
         _make_request(request_type='GET')))
 
 
-def get_subjects() -> set[tuple[str, str]]:
+def get_subjects() -> Set[Tuple[str, str]]:
     """Fetches the course subjects listed in the timetable.
 
     Returns:
@@ -324,7 +325,7 @@ def search_timetable(year: str, semester: Semester,
                      section_type: SectionType = SectionType.ALL,
                      code: str = '', crn: str = '',
                      status: Status = Status.ALL,
-                     modality: Modality = Modality.ALL) -> list[Course]:
+                     modality: Modality = Modality.ALL) -> List[Course]:
     """Performs a search of the timetable with the given arguments.
 
     Args:
@@ -384,7 +385,7 @@ def search_timetable(year: str, semester: Semester,
 
 
 def _make_request(request_type: str,
-                  request_data: dict[str: object] = None) -> str:
+                  request_data: Dict[str, str] = None) -> str:
     url = 'https://apps.es.vt.edu/ssb/HZSKVTSC.P_ProcRequest'
     if request_type == 'POST':
         for r in request_data:
