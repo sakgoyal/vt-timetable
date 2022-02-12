@@ -193,9 +193,9 @@ class Course:
                               timetable_data[11])
         if (extra_class_data is not None and
                 extra_class_data[4] == '* Additional Times *'):
-            for day in [self._day_dct[d] for d in extra_class_data[7].split()]:
-                class_dct[day] = (extra_class_data[8], extra_class_data[9],
-                                  extra_class_data[10])
+            for day in [self._day_dct[d] for d in extra_class_data[8].split()]:
+                class_dct[day] = (extra_class_data[9], extra_class_data[10],
+                                  extra_class_data[11])
 
         self._course_data = {'year': year, 'semester': semester,
                              'crn': timetable_data[0][:5],

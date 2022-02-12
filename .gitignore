@@ -1,0 +1,7 @@
+.idea
+dist
+docs
+src/vtt/__pycache__
+src/vt_timetable.egg-info
+tests
+venv

@@ -18,7 +18,7 @@ Documentation can be found
 This module can be installed from the Python Package Index.
 
 ```console
-pip install vt-timetable
+$ pip install vt-timetable
 ```
 
 After installing the module, it can be imported with:
