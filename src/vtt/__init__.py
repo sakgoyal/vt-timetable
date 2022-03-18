@@ -9,6 +9,7 @@ course. The two other functions, `get_semesters` and `get_subjects`, make it
 possible to check which search parameters are valid.
 """
 
+from collections import defaultdict
 from enum import Enum
 import re
 from typing import Dict, List, Set, Tuple
@@ -179,23 +180,24 @@ class Course:
             name = timetable_data[2]
 
         section_type = self._section_type_dct[
-            'O' if timetable_data[3] == 'ONLINE COURSE' else
+            'O' if re.match(r'ONLINE COURSE', timetable_data[3]) else
             re.match(r'[LBICR]', timetable_data[3]).group(0)]
 
         modality = (self._modality_dct[timetable_data[4]] if
                     timetable_data[4] in self._modality_dct else None)
 
-        class_dct = {}
+        class_dct = defaultdict(set)
         for day in [self._day_dct[d] for d in timetable_data[8].split()]:
             if day == Day.ARRANGED:
                 continue
-            class_dct[day] = (timetable_data[9], timetable_data[10],
-                              timetable_data[11])
+            class_dct[day].add((timetable_data[9], timetable_data[10],
+                                timetable_data[11]))
         if (extra_class_data is not None and
                 extra_class_data[4] == '* Additional Times *'):
             for day in [self._day_dct[d] for d in extra_class_data[8].split()]:
-                class_dct[day] = (extra_class_data[9], extra_class_data[10],
-                                  extra_class_data[11])
+                class_dct[day].add((extra_class_data[9], extra_class_data[10],
+                                    extra_class_data[11]))
+        class_dct = dict(class_dct)
 
         self._course_data = {'year': year, 'semester': semester,
                              'crn': timetable_data[0][:5],
@@ -246,7 +248,7 @@ class Course:
     def get_professor(self) -> str:
         return self._course_data['professor']
 
-    def get_schedule(self) -> Dict:
+    def get_schedule(self) -> Dict[Day, Set[Tuple[str, str, str]]]:
         return self._course_data['schedule']
 
     def has_open_spots(self) -> bool:
